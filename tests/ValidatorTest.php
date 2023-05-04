@@ -154,7 +154,7 @@ final class ValidatorTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $this->validator->validate(new Iban($iban), throw: true);
+        $this->validator->validate(new Iban($iban), true);
     }
 
     public function test_it_should_validate_an_iban_by_passing_object_of_instance_Iban(): void
@@ -185,7 +185,7 @@ final class ValidatorTest extends TestCase
     {
         $this->expectException(UnsupportedCountryCodeException::class);
 
-        $this->validator->validate(new Iban('ZZ89 3704 0044 0532 0130 00'), throw: true);
+        $this->validator->validate(new Iban('ZZ89 3704 0044 0532 0130 00'), true);
         $violations = $this->validator->getViolations();
 
         self::assertCount(1, $violations);
@@ -208,7 +208,7 @@ final class ValidatorTest extends TestCase
     {
         $this->expectException(InvalidLengthException::class);
 
-        $this->validator->validate(new Iban('DE89 3704 0044 0530 7877 089'), throw: true);
+        $this->validator->validate(new Iban('DE89 3704 0044 0530 7877 089'), true);
     }
 
     public function test_iban_validation_results_in_invalid_format(): void
@@ -226,7 +226,7 @@ final class ValidatorTest extends TestCase
     {
         $this->expectException(InvalidFormatException::class);
 
-        $this->validator->validate(new Iban('DE89 3704 0044 053A 013B 00'), throw: true);
+        $this->validator->validate(new Iban('DE89 3704 0044 053A 013B 00'), true);
     }
 
     public function test_iban_validation_results_in_invalid_checksum(): void
@@ -243,6 +243,6 @@ final class ValidatorTest extends TestCase
     {
         $this->expectException(InvalidChecksumException::class);
 
-        $this->validator->validate(new Iban('DE90 3704 0044 0532 0130 00'), throw: true);
+        $this->validator->validate(new Iban('DE90 3704 0044 0532 0130 00'), true);
     }
 }

@@ -16,7 +16,6 @@ use Iban\Validation\Exception\InvalidFormatException;
 use Iban\Validation\Exception\InvalidLengthException;
 use Iban\Validation\Swift\Exception\UnsupportedCountryCodeException;
 use Iban\Validation\Swift\Registry;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Validates International Bank Account Numbers (IBANs).
@@ -35,17 +34,21 @@ final class Validator
     {
         $this->swiftRegistry = $swiftRegistry ?? new Registry();
 
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $this->options = $resolver->resolve($options);
+        $this->options['violation.unsupported_country'] = (string)($options['violation.unsupported_country'] ?? 'The requested country is not supported!');
+        $this->options['violation.invalid_length']      = (string)($options['violation.invalid_length'] ?? 'The length of the given Iban is not valid!');
+        $this->options['violation.invalid_format']      = (string)($options['violation.invalid_format'] ?? 'The format of the given Iban is not valid!');
+        $this->options['violation.invalid_checksum']    = (string)($options['violation.invalid_checksum'] ?? 'The checksum of the given Iban is not valid!');
+
 
         $this->violations = [];
     }
 
     /**
-     * @param bool $throw whether an exception should be thrown on validation
+     * @param string|Iban $iban
+     * @param bool        $throw whether an exception should be thrown on validation
+     * @return bool
      */
-    public function validate(string|Iban $iban, bool $throw = false): bool
+    public function validate($iban, bool $throw = false): bool
     {
         if (!$iban instanceof Iban) {
             $iban = new Iban($iban);
@@ -99,21 +102,6 @@ final class Validator
     public function getViolations(): array
     {
         return $this->violations;
-    }
-
-    private function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'violation.unsupported_country' => 'The requested country is not supported!',
-            'violation.invalid_length' => 'The length of the given Iban is not valid!',
-            'violation.invalid_format' => 'The format of the given Iban is not valid!',
-            'violation.invalid_checksum' => 'The checksum of the given Iban is not valid!',
-        ]);
-
-        $resolver->setAllowedTypes('violation.unsupported_country', 'string');
-        $resolver->setAllowedTypes('violation.invalid_length', 'string');
-        $resolver->setAllowedTypes('violation.invalid_format', 'string');
-        $resolver->setAllowedTypes('violation.invalid_checksum', 'string');
     }
 
     /**

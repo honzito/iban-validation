@@ -60,12 +60,15 @@ final class Iban
 
     public function format(string $type = self::FORMAT_PRINT): string
     {
-        return match ($type) {
-            self::FORMAT_ELECTRONIC => $this->getNormalizedIban(),
-            self::FORMAT_PRINT => wordwrap($this->getNormalizedIban(), 4, ' ', true),
-            self::FORMAT_ANONYMIZED => str_pad(substr($this->getNormalizedIban(), -4), strlen($this->getNormalizedIban()), 'X', STR_PAD_LEFT),
-            default => $this->iban,
-        };
+        switch ($type) {
+            case self::FORMAT_ELECTRONIC:
+                return $this->getNormalizedIban();
+            case self::FORMAT_PRINT:
+                return wordwrap($this->getNormalizedIban(), 4, ' ', true);
+            case self::FORMAT_ANONYMIZED:
+                return str_pad(substr($this->getNormalizedIban(), -4), strlen($this->getNormalizedIban()), 'X', STR_PAD_LEFT);
+        }
+        return $this->iban;
     }
 
     public function countryCode(): string
