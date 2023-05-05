@@ -1,11 +1,18 @@
 {
-	"name" : "jschaedl/iban-validation",
+	"name" : "honzito/iban-validation",
 	"license" : "MIT",
 	"type" : "library",
 	"description" : "A small library for validating International BankAccount Numbers (IBANs).",
 	"keywords" : ["iban", "validation"],
 	"homepage" : "https://github.com/jschaedl/iban-validation",
-	"authors" : [{
+	"authors" : [
+		{
+			"name": "Honza Malík",
+			"email": "honzito@ecn.cz",
+			"homepage": "https://ecnstudio.cz/",
+			"role": "Developer"
+		},
+		{
 		"name" : "Jan Schaedlich",
 		"email" : "mail@janschaedlich.de",
 		"homepage" : "https://www.linkedin.com/in/janschaedlich"
